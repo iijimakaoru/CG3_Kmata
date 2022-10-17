@@ -147,6 +147,10 @@ private: // 静的メンバ変数
 	static VertexPosNormalUv vertices[vertexCount];
 	// 頂点インデックス配列
 	static unsigned short indices[indexCount];
+	// ビルボード行列
+	static XMMATRIX matBillboard;
+	// Y軸回りビルボード行列
+	static XMMATRIX matBillboardY;
 
 private:// 静的メンバ関数
 	/// <summary>
@@ -205,6 +209,10 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="position">座標</param>
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
+
+	void IsBillboard() { isBillboard = true; }
+
+	bool isBillboard = false;
 
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ

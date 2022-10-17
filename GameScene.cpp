@@ -64,6 +64,15 @@ void GameScene::Update()
 		else if (input->PushKey(DIK_A)) { Object3d::CameraMoveEyeVector({ -1.0f,0.0f,0.0f }); }
 	}
 
+	if (input->PushKey(DIK_SPACE))
+	{
+		object3d->isBillboard = true;
+	}
+	else
+	{
+		object3d->isBillboard = false;
+	}
+
 	object3d->Update();
 }
 
