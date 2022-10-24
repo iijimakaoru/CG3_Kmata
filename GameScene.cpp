@@ -73,6 +73,21 @@ void GameScene::Update()
 		object3d->isBillboard = false;
 	}
 
+	if (input->TriggerKey(DIK_1))
+	{
+		if (object3d->isBillboardY)
+		{
+			object3d->isBillboardY = false;
+		}
+		else
+		{
+			object3d->isBillboardY = true;
+		}
+	}
+
+	debugText.Print("BillboardON : SPACE", 0, 0, 1);
+	debugText.Print("ModeChange : 1Key", 0, 20, 1);
+
 	object3d->Update();
 }
 

@@ -214,6 +214,8 @@ public: // メンバ関数
 
 	bool isBillboard = false;
 
+	bool isBillboardY = false;
+
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	// 色
