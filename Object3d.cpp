@@ -532,6 +532,23 @@ void Object3d::UpdateViewMatrix()
 	matBillboard.r[2] = cameraAxisZ;
 	matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
 #pragma endregion
+
+#pragma region Y軸回りビルボード行列計算
+	// 
+	XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
+
+	// 
+	ybillCameraAxisX = cameraAxisX;
+	// 
+	ybillCameraAxisY = XMVector3Normalize(upVector);
+	// 
+	ybillCameraAxisZ = XMVector3Cross(ybillCameraAxisX, ybillCameraAxisY);
+	// 
+	matBillboardY.r[0] = ybillCameraAxisX;
+	matBillboardY.r[1] = ybillCameraAxisY;
+	matBillboardY.r[2] = ybillCameraAxisZ;
+	matBillboardY.r[3] = XMVectorSet(0, 0, 0, 1);
+#pragma endregion
 }
 
 bool Object3d::Initialize()
@@ -575,7 +592,7 @@ void Object3d::Update()
 
 	if (isBillboard)
 	{
-		matWorld *= matBillboard; // ビルボード行列を掛ける
+		matWorld *= matBillboardY; // ビルボード行列を掛ける
 	}
 
 	matWorld *= matScale; // ワールド行列にスケーリングを反映
