@@ -1,4 +1,4 @@
-#include "BasicShaderHeader.hlsli"
+#include "Particle.hlsli"
 //// 三角形の入力から点一つ出力するサンプル
 //[maxvertexcount(3)]
 //void main(
