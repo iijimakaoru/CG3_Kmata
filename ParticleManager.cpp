@@ -42,7 +42,7 @@ const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::X
 	return result;
 }
 
-void ParticleManager::Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel)
+void ParticleManager::Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, float start_scale, float end_scale)
 {
 	particles.emplace_front();
 
@@ -54,13 +54,13 @@ void ParticleManager::Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel)
 	p.num_frame = life;
 }
 
-void ParticleManager::StaticInitialize(ID3D12Device * device, int window_width, int window_height)
+void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
 {
 	// nullptrチェック
 	assert(device);
 
 	ParticleManager::device = device;
-		
+
 	// デスクリプタヒープの初期化
 	InitializeDescriptorHeap();
 
@@ -78,7 +78,7 @@ void ParticleManager::StaticInitialize(ID3D12Device * device, int window_width, 
 
 }
 
-void ParticleManager::PreDraw(ID3D12GraphicsCommandList * cmdList)
+void ParticleManager::PreDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	// PreDrawとPostDrawがペアで呼ばれていなければエラー
 	assert(ParticleManager::cmdList == nullptr);
@@ -165,7 +165,7 @@ void ParticleManager::CameraMoveEyeVector(XMFLOAT3 move)
 void ParticleManager::InitializeDescriptorHeap()
 {
 	HRESULT result = S_FALSE;
-	
+
 	// デスクリプタヒープを生成	
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
@@ -283,6 +283,9 @@ void ParticleManager::InitializeGraphicsPipeline()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
+		{
+			"TEXCOORD",0,DXGI_FORMAT_R32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
 	};
 
 	// グラフィックスパイプラインの流れを設定
@@ -375,7 +378,7 @@ void ParticleManager::LoadTexture()
 	ScratchImage scratchImg{};
 
 	// WICテクスチャのロード
-	result = LoadFromWICFile( L"Resources/effect1.png", WIC_FLAGS_NONE, &metadata, scratchImg);
+	result = LoadFromWICFile(L"Resources/effect1.png", WIC_FLAGS_NONE, &metadata, scratchImg);
 	assert(SUCCEEDED(result));
 
 	ScratchImage mipChain{};
@@ -444,7 +447,7 @@ void ParticleManager::CreateModel()
 	HRESULT result = S_FALSE;
 
 	std::vector<VertexPos> realVertices;
-	
+
 	/*VertexPos verticesPoint[] =
 	{
 		{{0.0f,0.0f,0.0f}},
@@ -637,6 +640,11 @@ void ParticleManager::Update()
 		it->frame++;
 		it->vel = it->vel + it->accel;
 		it->pos = it->pos + it->vel;
+
+		float f = (float)it->frame / it->num_frame;
+
+		it->scale = (it->e_scale - it->s_scale) * f;
+		it->scale += it->s_scale;
 	}
 	// 頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
@@ -648,6 +656,8 @@ void ParticleManager::Update()
 			it++)
 		{
 			vertMap->pos = it->pos;
+
+			vertMap->scale = it->scale;
 
 			vertMap++;
 		}
@@ -666,7 +676,7 @@ void ParticleManager::Draw()
 	// nullptrチェック
 	assert(device);
 	assert(ParticleManager::cmdList);
-		
+
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファの設定

@@ -26,6 +26,7 @@ public: // サブクラス
 	struct VertexPos
 	{
 		XMFLOAT3 pos; // xyz座標
+		float scale;
 	};
 
 	// 定数バッファ用データ構造体
@@ -48,6 +49,12 @@ public: // サブクラス
 		int frame = 0;
 
 		int num_frame = 0;
+
+		float scale = 1.0f;
+
+		float s_scale = 1.0f;
+
+		float e_scale = 0.0f;
 	};
 
 private: // 定数
@@ -207,7 +214,7 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	void Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel);
+	void Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, float start_scale, float end_scale);
 
 	/// <summary>
 	/// 座標の取得
