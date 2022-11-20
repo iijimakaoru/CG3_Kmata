@@ -60,7 +60,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		const float rnd_acc = 0.001f;
 		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-		emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f, { 1,0,1,1 });
+		particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { 1,0,1,1 });
 	}
 
 	particleMan->Update();
@@ -151,6 +151,11 @@ void GameScene::Update()
 			// 座標の変更を反映
 			object3d[0]->SetPosition(position);
 		}
+
+		for (int i = 0; i < 2; i++)
+		{
+			object3d[i]->Update();
+		}
 	}
 	else if (mode == 1)
 	{
@@ -169,9 +174,9 @@ void GameScene::Update()
 			const float rnd_acc = 0.001f;
 			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-			emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
-			emitter->SpawnParticle(60, { pos.x + move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
-			emitter->SpawnParticle(60, { pos.x - move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			particleMan->Add(60, { pos.x + move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			particleMan->Add(60, { pos.x - move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
 		}
 	}
 	else if (mode == 2)
@@ -194,16 +199,15 @@ void GameScene::Update()
 			const float rnd_acc = 0.001f;
 			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-			emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f,{ R,G,B,1.0f });
+			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
 		}
+	}
+	else
+	{
+		mode = 0;
 	}
 
 	particleMan->Update();
-
-	for (int i = 0; i < 2; i++)
-	{
-		object3d[i]->Update();
-	}
 }
 
 void GameScene::Draw()
@@ -230,9 +234,10 @@ void GameScene::Draw()
 #pragma region 3Dオブジェクト描画
 	Object3d::PreDraw(cmdList);
 
-	if (mode == 0)
+
+	for (int i = 0; i < 2; i++)
 	{
-		for (int i = 0; i < 2; i++)
+		if (mode == 0)
 		{
 			object3d[i]->Draw();
 		}
