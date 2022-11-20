@@ -65,13 +65,13 @@
     <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
       <Filter>シェーダー ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="BasicGS.hlsl">
+    <FxCompile Include="Resources\shaders\BasicGS.hlsl">
       <Filter>シェーダー ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="BasicPS.hlsl">
+    <FxCompile Include="Resources\shaders\BasicPS.hlsl">
       <Filter>シェーダー ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="BasicVShlsl.hlsl">
+    <FxCompile Include="Resources\shaders\BasicVS.hlsl">
       <Filter>シェーダー ファイル</Filter>
     </FxCompile>
   </ItemGroup>
@@ -82,7 +82,7 @@
     <None Include="Resources\shaders\SpriteShaderHeader.hlsli">
       <Filter>シェーダー ファイル</Filter>
     </None>
-    <None Include="Basic.hlsli">
+    <None Include="Resources\shaders\Basic.hlsli">
       <Filter>シェーダー ファイル</Filter>
     </None>
   </ItemGroup>
