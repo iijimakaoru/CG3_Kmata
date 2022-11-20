@@ -11,6 +11,7 @@ GameScene::~GameScene()
 {
 	delete spriteBG;
 	delete particleMan;
+	delete object3d;
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
@@ -32,6 +33,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
+
+	// 3Dオブジェクト生成
+	object3d = Object3d::Create();
+	object3d->Update();
+
 	// 3Dオブジェクト生成
 	particleMan = ParticleManager::Create();
 
@@ -168,6 +174,8 @@ void GameScene::Update()
 	}
 
 	particleMan->Update();
+
+	object3d->Update();
 }
 
 void GameScene::Draw()
@@ -197,6 +205,7 @@ void GameScene::Draw()
 
 	// 3Dオブクジェクトの描画
 	particleMan->Draw();
+	object3d->Draw();
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる

@@ -8,6 +8,8 @@
 #include "DebugText.h"
 #include "Emitter.h"
 
+#include "Object3d.h"
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -69,5 +71,7 @@ private: // メンバ変数
 	int mode = 0;
 
 	int maxMode = 1;
+
+	Object3d* object3d = nullptr;
 };
 
