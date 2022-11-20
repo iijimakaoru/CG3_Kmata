@@ -60,7 +60,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		const float rnd_acc = 0.001f;
 		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-		particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { 1,0,1,1 });
+		emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f, { 1,0,1,1 });
 	}
 
 	particleMan->Update();
@@ -160,7 +160,7 @@ void GameScene::Update()
 	else if (mode == 1)
 	{
 		float move = 5.0f;
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			XMFLOAT3 pos = { 0,0,0 };
 
@@ -174,14 +174,14 @@ void GameScene::Update()
 			const float rnd_acc = 0.001f;
 			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
-			particleMan->Add(60, { pos.x + move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
-			particleMan->Add(60, { pos.x - move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			emitter->SpawnParticle(60, { pos.x + move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			emitter->SpawnParticle(60, { pos.x - move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
 		}
 	}
 	else if (mode == 2)
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			const float rnd_pos = 10.0f;
 			XMFLOAT3 pos{};
@@ -199,7 +199,7 @@ void GameScene::Update()
 			const float rnd_acc = 0.001f;
 			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
 		}
 	}
 	else
