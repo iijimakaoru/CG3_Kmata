@@ -72,17 +72,17 @@ void GameScene::Update()
 	// オブジェクト移動
 	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 	{
-		//// 現在の座標を取得
-		//XMFLOAT3 position = object3d->GetPosition();
+		// 現在の座標を取得
+		XMFLOAT3 position = object3d->GetPosition();
 
-		//// 移動後の座標を計算
-		//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+		// 移動後の座標を計算
+		if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
 
-		//// 座標の変更を反映
-		//object3d->SetPosition(position);
+		// 座標の変更を反映
+		object3d->SetPosition(position);
 	}
 
 	// カメラ移動
@@ -94,7 +94,7 @@ void GameScene::Update()
 		else if (input->PushKey(DIK_A)) { ParticleManager::CameraMoveEyeVector({ -1.0f,0.0f,0.0f }); }
 	}
 
-	/*if (input->PushKey(DIK_SPACE))
+	if (input->PushKey(DIK_SPACE))
 	{
 		particleMan->isBillboard = true;
 	}
@@ -116,7 +116,7 @@ void GameScene::Update()
 	}
 
 	debugText.Print("BillboardON : SPACE", 0, 0, 1);
-	debugText.Print("ModeChange : 1Key", 0, 20, 1);*/
+	debugText.Print("ModeChange : 1Key", 0, 20, 1);
 
 	if (input->TriggerKey(DIK_SPACE))
 	{
@@ -200,12 +200,16 @@ void GameScene::Draw()
 #pragma endregion
 
 #pragma region 3Dオブジェクト描画
+	Object3d::PreDraw(cmdList);
+
+	object3d->Draw();
+
+	Object3d::PostDraw();
 	// 3Dオブジェクト描画前処理
 	ParticleManager::PreDraw(cmdList);
 
 	// 3Dオブクジェクトの描画
 	particleMan->Draw();
-	object3d->Draw();
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる

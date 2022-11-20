@@ -596,7 +596,7 @@ void Object3d::Update()
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = matView * matProjection;	// 行列の合成
+	constMap->mat = matView * matWorld * matProjection;	// 行列の合成
 	constBuff->Unmap(0, nullptr);
 }
 
