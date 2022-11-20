@@ -1,4 +1,8 @@
-float4 main( float4 pos : POSITION ) : SV_POSITION
+#include "Basic.hlsli"
+
+VSOutput main(float4 pos : POSITION)
 {
-	return pos;
+	VSOutput output; // ピクセルシェーダーに渡す値
+	output.pos = pos;
+	return output;
 }
