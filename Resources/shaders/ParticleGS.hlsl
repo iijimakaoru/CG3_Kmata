@@ -36,8 +36,8 @@ static const float2 uv_array[vnum] =
 {
 	float2(0,1),
 	float2(0,0),
-	float2(1,0),
 	float2(1,1),
+	float2(1,0),
 };
 
 [maxvertexcount(vnum)]
@@ -48,12 +48,13 @@ void main(
 )
 {
 	GSOutput element;
+
+	float4 offset;
 	for (uint i = 0; i < vnum; i++)
 	{
-		float4 offset;
 		offset = offset_array[i] * input[0].scale;
 
-		offset = mul(matBillboard, offset_array[i]);
+		offset = mul(matBillboard, offset);
 
 		element.svpos = input[0].pos + offset;
 

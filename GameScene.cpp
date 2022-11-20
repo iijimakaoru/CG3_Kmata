@@ -34,7 +34,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
 	particleMan = ParticleManager::Create();
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		const float rnd_pos = 10.0f;
 		XMFLOAT3 pos{};
@@ -52,7 +52,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		const float rnd_acc = 0.001f;
 		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-		particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f);
+		particleMan->Add(100, pos, vel, acc, 1.0f, 0.0f);
 	}
 
 	particleMan->Update();
@@ -109,7 +109,7 @@ void GameScene::Update()
 	debugText.Print("BillboardON : SPACE", 0, 0, 1);
 	debugText.Print("ModeChange : 1Key", 0, 20, 1);
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		const float rnd_pos = 10.0f;
 		XMFLOAT3 pos{};

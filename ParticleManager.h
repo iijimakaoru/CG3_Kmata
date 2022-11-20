@@ -234,12 +234,24 @@ public: // メンバ関数
 
 	bool isBillboardY = false;
 
+	bool SpawnParticle() 
+	{
+		if (particles.max_size() > 100)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	// 色
 	//XMFLOAT4 color = { 1,1,1,1 };
 	// ローカルスケール
-	XMFLOAT3 scale = { 1,1,1 };
+	//XMFLOAT3 scale = { 1,1,1 };
 	// X,Y,Z軸回りのローカル回転角
 	//XMFLOAT3 rotation = { 0,0,0 };
 	// ローカル座標

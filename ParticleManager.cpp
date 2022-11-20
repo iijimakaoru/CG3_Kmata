@@ -52,6 +52,8 @@ void ParticleManager::Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, 
 	p.vel = vel;
 	p.accel = accel;
 	p.num_frame = life;
+	p.s_scale = start_scale;
+	p.e_scale = end_scale;
 }
 
 void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
@@ -157,6 +159,8 @@ void ParticleManager::CameraMoveEyeVector(XMFLOAT3 move)
 	eye_moved.x += move.x;
 	eye_moved.y += move.y;
 	eye_moved.z += move.z;
+
+	eye_moved.z = -20;
 
 	SetEye(eye_moved);
 	SetTarget(target_moved);
@@ -598,7 +602,7 @@ void ParticleManager::Update()
 	XMMATRIX matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+	//matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
 	matRot = XMMatrixIdentity();
 	/*matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
 	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
