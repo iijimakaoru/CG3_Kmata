@@ -42,7 +42,7 @@ const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::X
 	return result;
 }
 
-void ParticleManager::Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, float start_scale, float end_scale)
+void ParticleManager::Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 color)
 {
 	particles.emplace_front();
 
@@ -54,6 +54,7 @@ void ParticleManager::Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, 
 	p.num_frame = life;
 	p.s_scale = start_scale;
 	p.e_scale = end_scale;
+	p.color = color;
 }
 
 void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
@@ -288,7 +289,18 @@ void ParticleManager::InitializeGraphicsPipeline()
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 		{
-			"TEXCOORD",0,DXGI_FORMAT_R32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+			"TEXCOORD",
+			0,DXGI_FORMAT_R32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
+		{
+			"COLOR",
+			0,DXGI_FORMAT_R32G32B32A32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
 		},
 	};
 
@@ -649,6 +661,8 @@ void ParticleManager::Update()
 
 		it->scale = (it->e_scale - it->s_scale) * f;
 		it->scale += it->s_scale;
+
+		it->color = it->color;
 	}
 	// 頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
@@ -662,6 +676,8 @@ void ParticleManager::Update()
 			vertMap->pos = it->pos;
 
 			vertMap->scale = it->scale;
+
+			vertMap->color = it->color;
 
 			vertMap++;
 		}

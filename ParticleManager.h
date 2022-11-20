@@ -27,6 +27,7 @@ public: // サブクラス
 	{
 		XMFLOAT3 pos; // xyz座標
 		float scale;
+		XMFLOAT4 color;
 	};
 
 	// 定数バッファ用データ構造体
@@ -55,6 +56,8 @@ public: // サブクラス
 		float s_scale = 1.0f;
 
 		float e_scale = 0.0f;
+
+		XMFLOAT4 color = { 1,1,1,1 };
 	};
 
 private: // 定数
@@ -153,6 +156,7 @@ private: // 静的メンバ変数
 	static XMMATRIX matView;
 	// 射影行列
 	static XMMATRIX matProjection;
+
 	// 視点座標
 	static XMFLOAT3 eye;
 	// 注視点座標
@@ -214,7 +218,7 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	void Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, float start_scale, float end_scale);
+	void Add(int life, XMFLOAT3 pos, XMFLOAT3 vel, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 color);
 
 	/// <summary>
 	/// 座標の取得

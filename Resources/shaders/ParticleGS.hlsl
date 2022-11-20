@@ -58,6 +58,8 @@ void main(
 
 		element.svpos = input[0].pos + offset;
 
+		element.color = input[0].color;
+
 		element.svpos = mul(mat, element.svpos);
 		element.uv = uv_array[i];
 		output.Append(element);
