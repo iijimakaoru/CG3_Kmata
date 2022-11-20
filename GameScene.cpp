@@ -32,7 +32,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	debugText.Initialize(debugTextTexNumber);
 
 	// テクスチャ読み込み
-	Sprite::LoadTexture(1, L"Resources/background.png");
+	Sprite::LoadTexture(1, L"Resources/haikeidesu.jpg");
 
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
@@ -111,8 +111,19 @@ void GameScene::Update()
 
 	object3d[0]->isBillboard = true;
 
-	debugText.Print("BillboardON : SPACE", 0, 0, 1);
-	debugText.Print("ModeChange : 1Key", 0, 20, 1);
+	debugText.Print("ModeChange:M", 0, 0, 1);
+	if (mode == 0)
+	{
+		debugText.Print("Mode:Billboard", 0, 20, 1);
+	}
+	if (mode == 1)
+	{
+		debugText.Print("Mode:Emitter", 0, 20, 1);
+	}
+	if (mode == 2)
+	{
+		debugText.Print("Mode:Particle", 0, 20, 1);
+	}
 
 	if (input->TriggerKey(DIK_M))
 	{
