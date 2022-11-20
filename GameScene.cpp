@@ -85,7 +85,7 @@ void GameScene::Update()
 		else if (input->PushKey(DIK_A)) { ParticleManager::CameraMoveEyeVector({ -1.0f,0.0f,0.0f }); }
 	}
 
-	if (input->PushKey(DIK_SPACE))
+	/*if (input->PushKey(DIK_SPACE))
 	{
 		particleMan->isBillboard = true;
 	}
@@ -107,7 +107,7 @@ void GameScene::Update()
 	}
 
 	debugText.Print("BillboardON : SPACE", 0, 0, 1);
-	debugText.Print("ModeChange : 1Key", 0, 20, 1);
+	debugText.Print("ModeChange : 1Key", 0, 20, 1);*/
 
 	for (int i = 0; i < 10; i++)
 	{
