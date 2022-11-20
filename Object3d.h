@@ -32,6 +32,7 @@ public: // サブクラス
 	{
 		//XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX mat;	// ３Ｄ変換行列
+		XMMATRIX matBillboard;
 	};
 
 private: // 定数

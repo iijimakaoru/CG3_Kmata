@@ -70,8 +70,17 @@ private: // メンバ変数
 
 	int mode = 0;
 
-	int maxMode = 1;
+	int maxMode = 2;
 
-	Object3d* object3d = nullptr;
+	Object3d* object3d[2] = { nullptr };
+
+	float R = 0.5f;
+	float G = 0.5f;
+	float B = 0.5f;
+	float A = 1.0f;
+
+	float rSpeed = 0.01f;
+	float gSpeed = 0.01f;
+	float bSpeed = 0.01f;
 };
 

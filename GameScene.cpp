@@ -11,7 +11,10 @@ GameScene::~GameScene()
 {
 	delete spriteBG;
 	delete particleMan;
-	delete object3d;
+	for (int i = 0; i < 2; i++)
+	{
+		delete object3d[i];
+	}
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
@@ -63,26 +66,32 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	particleMan->Update();
 
 	// 3Dオブジェクト生成
-	object3d = Object3d::Create();
-	object3d->Update();
+	for (int i = 0; i < 2; i++)
+	{
+		object3d[i] = Object3d::Create();
+		object3d[i]->Update();
+	}
 }
 
 void GameScene::Update()
 {
-	// オブジェクト移動
-	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+	R += rSpeed;
+	G -= gSpeed;
+	B += bSpeed;
+
+	if (R > 1.0f || R < 0)
 	{
-		// 現在の座標を取得
-		XMFLOAT3 position = object3d->GetPosition();
+		rSpeed = -rSpeed;
+	}
 
-		// 移動後の座標を計算
-		if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+	if (G > 1.0f || G < 0)
+	{
+		gSpeed = -gSpeed;
+	}
 
-		// 座標の変更を反映
-		object3d->SetPosition(position);
+	if (B > 1.0f || B < 0)
+	{
+		bSpeed = -bSpeed;
 	}
 
 	// カメラ移動
@@ -92,33 +101,20 @@ void GameScene::Update()
 		else if (input->PushKey(DIK_S)) { ParticleManager::CameraMoveEyeVector({ 0.0f,-1.0f,0.0f }); }
 		if (input->PushKey(DIK_D)) { ParticleManager::CameraMoveEyeVector({ +1.0f,0.0f,0.0f }); }
 		else if (input->PushKey(DIK_A)) { ParticleManager::CameraMoveEyeVector({ -1.0f,0.0f,0.0f }); }
+
+		if (input->PushKey(DIK_W)) { Object3d::CameraMoveEyeVector({ 0.0f,+1.0f,0.0f }); }
+		else if (input->PushKey(DIK_S)) { Object3d::CameraMoveEyeVector({ 0.0f,-1.0f,0.0f }); }
+		if (input->PushKey(DIK_D)) { Object3d::CameraMoveEyeVector({ +1.0f,0.0f,0.0f }); }
+		else if (input->PushKey(DIK_A)) { Object3d::CameraMoveEyeVector({ -1.0f,0.0f,0.0f }); }
 	}
 
-	if (input->PushKey(DIK_SPACE))
-	{
-		particleMan->isBillboard = true;
-	}
-	else
-	{
-		particleMan->isBillboard = false;
-	}
 
-	if (input->TriggerKey(DIK_1))
-	{
-		if (particleMan->isBillboardY)
-		{
-			particleMan->isBillboardY = false;
-		}
-		else
-		{
-			particleMan->isBillboardY = true;
-		}
-	}
+	object3d[0]->isBillboard = true;
 
 	debugText.Print("BillboardON : SPACE", 0, 0, 1);
 	debugText.Print("ModeChange : 1Key", 0, 20, 1);
 
-	if (input->TriggerKey(DIK_SPACE))
+	if (input->TriggerKey(DIK_M))
 	{
 		mode++;
 		if (mode > maxMode)
@@ -129,25 +125,20 @@ void GameScene::Update()
 
 	if (mode == 0)
 	{
-		for (int i = 0; i < 10; i++)
+		// オブジェクト移動
+		if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 		{
-			const float rnd_pos = 10.0f;
-			XMFLOAT3 pos{};
-			pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-			pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-			pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+			// 現在の座標を取得
+			XMFLOAT3 position = object3d[0]->GetPosition();
 
-			const float rnd_vel = 0.1f;
-			XMFLOAT3 vel{};
-			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-			vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			// 移動後の座標を計算
+			if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+			else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+			if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+			else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
 
-			XMFLOAT3 acc{};
-			const float rnd_acc = 0.001f;
-			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
-
-			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
+			// 座標の変更を反映
+			object3d[0]->SetPosition(position);
 		}
 	}
 	else if (mode == 1)
@@ -167,15 +158,41 @@ void GameScene::Update()
 			const float rnd_acc = 0.001f;
 			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
-			particleMan->Add(60, { pos.x + move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
-			particleMan->Add(60, { pos.x - move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
+			emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			emitter->SpawnParticle(60, { pos.x + move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+			emitter->SpawnParticle(60, { pos.x - move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { R,G,B,1.0f });
+		}
+	}
+	else if (mode == 2)
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			const float rnd_pos = 10.0f;
+			XMFLOAT3 pos{};
+			pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+			pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+			pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+			XMFLOAT3 acc{};
+			const float rnd_acc = 0.001f;
+			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
+
+			emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f,{ R,G,B,1.0f });
 		}
 	}
 
 	particleMan->Update();
 
-	object3d->Update();
+	for (int i = 0; i < 2; i++)
+	{
+		object3d[i]->Update();
+	}
 }
 
 void GameScene::Draw()
@@ -202,7 +219,13 @@ void GameScene::Draw()
 #pragma region 3Dオブジェクト描画
 	Object3d::PreDraw(cmdList);
 
-	object3d->Draw();
+	if (mode == 0)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			object3d[i]->Draw();
+		}
+	}
 
 	Object3d::PostDraw();
 	// 3Dオブジェクト描画前処理

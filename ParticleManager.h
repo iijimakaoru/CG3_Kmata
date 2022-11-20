@@ -57,7 +57,7 @@ public: // サブクラス
 
 		float e_scale = 0.0f;
 
-		XMFLOAT4 color = { 1,1,1,1 };
+		XMFLOAT4 color = { 0.5f,0.5f,0.5f,1 };
 	};
 
 private: // 定数

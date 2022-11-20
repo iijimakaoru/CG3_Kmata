@@ -573,14 +573,7 @@ void Object3d::Update()
 
 	if (isBillboard)
 	{
-		if (isBillboardY)
-		{
-			matWorld *= matBillboardY; // ビルボード行列を掛ける
-		}
-		else
-		{
-			matWorld *= matBillboard; // ビルボード行列を掛ける
-		}
+		matWorld *= matBillboard; // ビルボード行列を掛ける
 	}
 
 	matWorld *= matScale; // ワールド行列にスケーリングを反映
@@ -597,6 +590,7 @@ void Object3d::Update()
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = matView * matWorld * matProjection;	// 行列の合成
+	//constMap->matBillboard = matBillboard;	// 行列の合成
 	constBuff->Unmap(0, nullptr);
 }
 
