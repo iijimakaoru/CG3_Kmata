@@ -250,6 +250,8 @@ public: // メンバ関数
 		}
 	}
 
+	std::forward_list<Particle> particles;
+
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	// 色
@@ -264,7 +266,5 @@ private: // メンバ変数
 	//MMATRIX matWorld;
 	// 親オブジェクト
 	//ParticleManager* parent = nullptr;
-
-	std::forward_list<Particle> particles;
 };
 

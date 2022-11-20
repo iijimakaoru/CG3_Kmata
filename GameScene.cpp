@@ -34,6 +34,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
 	particleMan = ParticleManager::Create();
+
+	emitter = new Emitter();
+	emitter->Init(particleMan);
 	for (int i = 0; i < 1; i++)
 	{
 		const float rnd_pos = 10.0f;
@@ -52,7 +55,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		const float rnd_acc = 0.001f;
 		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 
-		particleMan->Add(100, pos, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
+		emitter->SpawnParticle(60, pos, vel, acc, 1.0f, 0.0f, { 1,0,1,1 });
 	}
 
 	particleMan->Update();
@@ -109,25 +112,59 @@ void GameScene::Update()
 	debugText.Print("BillboardON : SPACE", 0, 0, 1);
 	debugText.Print("ModeChange : 1Key", 0, 20, 1);*/
 
-	for (int i = 0; i < 10; i++)
+	if (input->TriggerKey(DIK_SPACE))
 	{
-		const float rnd_pos = 10.0f;
-		XMFLOAT3 pos{};
-		pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-		pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-		pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		mode++;
+		if (mode > maxMode)
+		{
+			mode = 0;
+		}
+	}
 
-		const float rnd_vel = 0.1f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+	if (mode == 0)
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			const float rnd_pos = 10.0f;
+			XMFLOAT3 pos{};
+			pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+			pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+			pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 
-		XMFLOAT3 acc{};
-		const float rnd_acc = 0.001f;
-		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
-		particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f,{0.5f,0.5f,0.5f,1.0f});
+			XMFLOAT3 acc{};
+			const float rnd_acc = 0.001f;
+			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
+
+			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
+		}
+	}
+	else if (mode == 1)
+	{
+		float move = 5.0f;
+		for (int i = 0; i < 10; i++)
+		{
+			XMFLOAT3 pos = { 0,0,0 };
+
+			const float rnd_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+			XMFLOAT3 acc{};
+			const float rnd_acc = 0.001f;
+			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
+
+			particleMan->Add(60, pos, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
+			particleMan->Add(60, { pos.x + move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
+			particleMan->Add(60, { pos.x - move,pos.y + move,0 }, vel, acc, 1.0f, 0.0f, { 0.5f,0.5f,0.5f,1.0f });
+		}
 	}
 
 	particleMan->Update();

@@ -6,6 +6,7 @@
 #include "Sprite.h"
 #include "ParticleManager.h"
 #include "DebugText.h"
+#include "Emitter.h"
 
 /// <summary>
 /// ゲームシーン
@@ -62,5 +63,11 @@ private: // メンバ変数
 	Sprite* spriteBG = nullptr;
 	//ParticleManager* object3d = nullptr;
 	ParticleManager* particleMan = nullptr;
+
+	Emitter* emitter = nullptr;
+
+	int mode = 0;
+
+	int maxMode = 1;
 };
 
